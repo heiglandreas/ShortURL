@@ -1,0 +1,73 @@
+README
+======
+
+hei.gl - an application to shorten URLs
+---------------------------
+
+Requirements:
+-------------
+
+The application shall shorten URLs for logged in users.
+Therefore we need a storage for users. Users can log in via 
+OpenID/OAuth, so we need no password storage.
+
+After logging in, the user can see an overview of her URLs 
+shortened so far. Also she has the possibility to enter a
+new URL into a field that will then be shortened. 
+
+The user at first becomes a generated URL that can then be adapted. The URL
+will be stored after actively hitting a button or so.
+
+shortURLs can be altered afterwards by creating a link to the original one.
+
+shortURLs consist automaticaly of 6 to 8 characters including upper- and
+lowercase Charactersas well as the digits 0 through 9. therefore we have
+62^8 possible URLs which is something about 218.340.105.584.896. That shoud
+suffice for the moment. That makes a total of 20-22 characters for a short
+URL like http://hei.gl/8chaRacs
+
+When a short URL is called the browser is sent a 301-redirect header to the 
+original URL.
+
+When doing so, some informations are stored about the requesting user. These
+include the following:
+
+* IP-Adress (anonymized to the first to triplets for IPv4)
+* User-Agent
+* Referer (if there has been one)
+* Prefered Language
+
+From the IP-Adress we can retrieve the country from where the visit came,
+from the user-agent we can retrieve the Users Operating System, the kind of
+browser used to view the url and the version of the browser.
+From the Referer we can see which pages have linked the shortUrl and from
+the prefered language we can see which language the user preferes.
+
+The application also has an API that allows users to interact via JSON or 
+XML-RPC with the shortener.
+
+The user can klick onto one of her links to see some additional informations
+about the usage of her shortURLs. The informations can be retrieved by adding
+an '=' to the end of the shortURL.
+
+Multiple Users can share a single account by adding users to an accout. So 
+one user creates an account and her OpenID is added to that account. That
+user can then add/remove other users to her account.
+
+A logged in user can then select which account she now wants to use
+
+Technical
+---------
+
+  User-Table 
+  	holds id, name, openID, mail?, active
+  Account-Table 
+  	holds id, account-name, active
+  User-Account-Relation 
+  	holds user-id, account-id, admin-flag
+  URL-Table
+  	holds id, account-id, URL, short-URL, DateTime
+  Visit-Table
+  	holds id, url-id, IP-Address, Referer, User-Agent, Prefered Language, DateTime
+
+
