@@ -1,0 +1,20 @@
+;;
+;; @__LICENSE_TEXT__@
+;;
+;; @category   hei.gl
+;; @package    Configuration
+;; @author     Andreas Heigl<a.heigl@wdv.de>
+;; @copyright  2011-@__YEAR__@ Andreas Heigl
+;; @license    @__LICENSEURL__@ @__LICENSENAME__@
+;; @version    @__VERSION__@
+;; @since      12.05.2011
+[production]
+driver   = pdo_mysql
+user     = dbUser
+password = secretKey
+dbname   = heigl
+host     = localhost 
+
+[development : production]
+
+[testing : production]

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content" value="text/html; charset='utf-8'" />
+    <?php echo $this->headTitle() ?>
+    <?php echo $this->headScript() ?>
+    <?php echo $this->headStyle() ?>
+	</head>
+	<body>
+		<?php echo $this->layout()->header; ?>
+		<?php echo $this->layout()->navigation; ?>
+		<?php echo $this->layout()->content; ?>
+		<?php echo $this->render('footer.phtml'); ?>
+	</body>
+</html>

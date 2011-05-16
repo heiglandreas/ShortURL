@@ -1,0 +1,2 @@
+SetEnv APPLICATION_ENV development
+php_value include_path '.:/usr/local/php5/php:/Volumes/Sites/Sites/zf/library:/Volumes/Sites/Library/doctrine-orm:/Volumes/Sites/Sites/hei.gl/src/library'
