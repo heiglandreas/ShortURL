@@ -19,15 +19,13 @@
     <tstamp>
         <format property="YEAR" pattern="yyyy"/>
     </tstamp>
-    <buildnumber file="tools/build.number"/>
     <property file="tools/build.number" />
     <property name="buildDir" value="${basedir}/build" />
     <property name="srcDir"   value="${basedir}/src" />
     <property name="tutDir"   value="${basedir}/tutorial" />
-    <property name="docDir"   value="${basedir}/doc" />
+    <property name="docDir"   value="${basedir}/docs" />
     <property name="testDir"  value="${basedir}/tests" />
     <property name="distDir"  value="${basedir}/dist" />
-    <property name="zipFile"     value="${distDir}/despace-${DSTAMP}-${build.number}.zip" />
     <property name="licenseFile" value="${basedir}/tools/license.prepend" />
     
     <!-- 
@@ -42,7 +40,7 @@
                 <include name="**/*~" />
                 <include name="**/.DS_Store" />
             </fileset>
-            <fileset dir="${distDir}" defaultexcludes="false">
+            <fileset dir="${buildDir}" defaultexcludes="false">
                 <include name="**/*" />
             </fileset>
             <fileset dir="${docDir}" defaultexcludes="false">
@@ -70,22 +68,23 @@
         and minify the javascript
     -->
     <target name="build"
-              depends="runtests, distclean, builddoc" />
+              depends="distclean, builddoc, build.phpcs, runtests" />
               
     <!-- 
         Build the documentation
         
         As I have not yet found a tool this simply does nothing at all ;-)
     -->
-    <target name="builddoc">
+    <target name="builddoc"
+            depends="move">
         <exec executable="/usr/local/php5/bin/phpdoc" dir="${buildDir}/src/" failonerror="on">
             <arg line=" --directory ../../${tutDir},.,${basedir}
-                        --target ${docDir}/api
+                        --target ${buildDir}/api
                         --quiet off
                         --undocumentedelements on
-                        --title 'Org_Heigl_Converter'
+                        --title 'ShortUrl'
                         --parseprivate off
-                        --defaultpackagename 'Org_Heigl_Converter'
+                        --defaultpackagename 'ShortUrl'
                         --output HTML:frames:DOM/earthli.de.utf8
                         --customtags pattern,todo,conf,uses,assigns,***licenseText***@,const,constant
                         --readmeinstallchangelog INSTALL,README,CHANGELOG,LICENSE
@@ -103,16 +102,27 @@
         Check for violations against the coding standards
      -->
     <target name="build.phpcs" depends="">
-        <exec executable="phpcs" dir="${basedir}/" failonerror="on" output="doc/compass/codesniffer.xml">
-            <arg value="--standard=wdvCompass"/>
+        <exec executable="/usr/local/php5/bin/phpcs" dir="${basedir}" failonerror="false" output="build/codesniffer.xml">
+            <arg value="--standard=Zend"/>
             <arg value="--extensions=php"/>
             <arg value="--report=checkstyle"/>
-            <arg value="--ignore=Hyphenator/parsedFiles"/>
             <!-- these are the folders to parse -->
-            <arg value="app/controller" />
-            <arg value="app/model" />
-            <arg value="lib/zf/Wdv" />
-            <arg value="lib/zf/Org"/>
+            <arg value="src" />
+        </exec>
+    </target>
+
+    <!--
+        Create some metrics
+     -->
+    <target name="build.pdepend" depends="">
+        <mkdir dir="${buildDir}/pdepend"/>
+        <exec executable="/usr/local/php5/bin/pdepend" dir="${basedir}" failonerror="false">
+            <arg value="--jdepend-chart=${buildDir}/pdepend/jdepend.svg" />
+            <arg value="--jdepend-xml=${buildDir}/pdepend/jdepend.xml"/>
+            <arg value="--overview-pyramid=${buildDir}/pdepend/pyramid.svg"/>
+            <arg value="--suffix=php"/>
+            <!-- these are the folders to parse -->
+            <arg value="src" />
         </exec>
     </target>
 
@@ -120,12 +130,11 @@
         Runs the JSUnit-Tests
         
         Allong the way we create some metrics that can be included into the 
-        documentation
+        <documentation>
+        	
+        </documentation>
     -->
     <target name="runtests">
-        <delete includeemptydirs="true">
-            <fileset dir="${buildDir}" includes="**/*"/>
-        </delete>
         <!-- mkdir dir="${buildDir}/logs"/-->
         <mkdir dir="${buildDir}/phpunit"/>
         <exec executable="/usr/local/php5/bin/phpunit" dir="${basedir}/tests" failonerror="on">
@@ -141,7 +150,23 @@
         README, INSTALL and LICENSE-Files and put them into a ZIP-file after 
         replacing the given placeholders 
      -->
-    <target name="distribute" depends="runtests, distclean">
+    <target name="distribute" depends="distclean, runtests, build.pdepend, build.phpcs">
+    <buildnumber file="tools/build.number"/>
+    <property name="zipFile"     value="${distDir}/ShortUrl-${DSTAMP}-${build.number}.zip" />
+        <antcall target="builddoc" />
+        <zip destfile="${zipFile}">
+            <zipfileset dir="${buildDir}/src" prefix="ShortUrl/" />
+            <zipfileset dir="${buildDir}/phpunit/coverage" prefix="documentation/coverage" />
+            <zipfileset dir="${buildDir}/api" prefix="documentation/api"/>
+            <zipfileset dir="${buildDir}/pdepend" prefix="documentation/pdepend"/>
+            <zipfileset file="${buildDir}/codesniffer.xml" prefix="documentation"/>
+            <fileset dir="${basedir}" includes="CHANGELOG" />
+            <fileset dir="${basedir}" includes="LICENSE" />
+            <fileset dir="${basedir}" includes="README" />
+        </zip>
+    </target>
+    
+    <target name="move">
         <copy filtering="true" todir="${buildDir}/src">
             <fileset dir="${srcDir}" />
             <filterset>
@@ -152,6 +177,7 @@
                 <filter token="__LICENSEURL__" value="http://www.opensource.org/licenses/mit-license.php"/>
                 <filter token="__LICENSENAME__" value="MIT-License"/>
                 <filter token="__YEAR__" value="${YEAR}"/>
+                <filter token="__LICENSE_TEXT__" value="@__LICENSE__@" />
                 <filter token="__LICENSE__" value="Copyright (c) 2011-${YEAR} Andreas Heigl&lt;andreas@heigl.org&gt;&#13;
 * &#13;
 * Permission is hereby granted, free of charge, to any person obtaining a copy&#13;
@@ -173,13 +199,6 @@
 * THE SOFTWARE."/>
             </filterset>
         </copy>
-        <antcall target="builddoc" />
-        <zip destfile="${zipFile}">
-            <zipfileset dir="${buildDir}/src" prefix="hei.gl/" />
-            <zipfileset dir="${docDir}" prefix="documentation"/>
-            <fileset dir="${basedir}" includes="CHANGELOG" />
-            <fileset dir="${basedir}" includes="LICENSE" />
-            <fileset dir="${basedir}" includes="README" />
-        </zip>
+        
     </target>
 </project>

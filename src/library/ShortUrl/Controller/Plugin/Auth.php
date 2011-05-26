@@ -25,14 +25,14 @@ require_once 'Zend/Controller/Plugin/Abstract.php';
  * @version    GIT: $Revision: $
  * @since      10.05.2011
  */
-class Heigl_Controller_Plugin_Auth extends Zend_Controller_Plugin_Abstract
+class ShortUrl_Controller_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 {
 	/**
 	 *
 	 */
     public function preDispatch ( Zend_Controller_Request_Abstract $request )
 	{
-		if ( ! Zend_Auth::getInstance () -> hasIdentity () 
+		if ( ! Zend_Auth::getInstance () -> hasIdentity ()
 			&& ( $request -> getModuleName () == 'admin' ) ) {
 			// Begin IF.
 		 	$response = $this -> getResponse ();

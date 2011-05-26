@@ -33,8 +33,20 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initPlugins ()
 	{
 		$front = Zend_Controller_Front::getInstance ();
-		require_once 'Heigl/Controller/Plugin/Auth.php';
-		$front -> registerPlugin ( new Heigl_Controller_Plugin_Auth () );
+		require_once 'ShortUrl/Controller/Plugin/Auth.php';
+		$front -> registerPlugin ( new ShortUrl_Controller_Plugin_Auth () );
+	}
+
+	/**
+	 * Initialize the configuration
+	 *
+	 * @return Zend_Config
+	 */
+	protected function _initConfig()
+	{
+	    $config = $this->getOptions();
+	    Zend_Registry::set('Zend_Config',$config);
+	    return $config;
 	}
 
 	/**
@@ -52,6 +64,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		    )
 		);
 		Zend_Controller_Front::getInstance () -> getRouter () -> addRoute ( 'short', $route );
+//		$route = new Zend_Controller_Router_Route(
+//			':module/:controller/:action/*',
+//		    array(
+//		        'module'     => 'default',
+//		        'controller' => 'index',
+//		        'action'     => 'index',
+//		    )
+//		);
+//		Zend_Controller_Front::getInstance () -> getRouter () -> addRoute ( 'default', $route );
 	}
 
 	/**
@@ -75,8 +96,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			DIRECTORY_SEPARATOR .
 			'..' .
 			DIRECTORY_SEPARATOR .
-			'..' .
-			DIRECTORY_SEPARATOR .
 			'log' .
 			DIRECTORY_SEPARATOR .
 			date ( 'Ymd' ) . '-TranslateError.log' );
@@ -93,7 +112,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 	protected function _initAutoloader()
 	{
-		$autoloader = Zend_Loader_Autoloader::getInstance();
+	    $autoloader = Zend_Loader_Autoloader::getInstance();
 		$autoloader->registerNamespace('Heigl');
 		$autoloader->pushAutoloader(array('ezcBase', 'autoload'), 'ezc');
 	}
@@ -128,7 +147,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		          );
 		$config->setMetadataDriverImpl($driver);
         // set the proxy dir and set some options
-        $config->setProxyDir(APPLICATION_PATH . '/models/Proxies');
+        $config->setProxyDir(APPLICATION_PATH . '/proxies');
         $config->setAutoGenerateProxyClasses(true);
         $config->setProxyNamespace('App\Proxies');
 
@@ -137,8 +156,43 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $conf = new Zend_Config_Ini ( APPLICATION_PATH . '/configs/database.ini', APPLICATION_ENV );
 
 	    $entityManager = \Doctrine\ORM\EntityManager::create($conf -> toArray (), $config);
-
+	    if($conf->encoding){
+	        $entityManager->getConnection()->setCharset($conf->encoding);
+	    }
 	    // push the entity manager into our registry for later use
-	    Zend_Registry::set('doctrine', $entityManager);
+	    Zend_Registry::set('entityManager', $entityManager);
+	    return $entityManager;
+	}
+
+	/**
+	 * Initialize the logging system
+	 *
+	 * @return Zend_Log
+	 */
+	protected function _initLog()
+	{
+	    $log = new Zend_Log();
+	    $logOptions = new Zend_Config_Ini( APPLICATION_PATH . '/configs/logs.ini', APPLICATION_ENV);
+	    foreach($logOptions->writer as $writer ){
+	        $myWriter = 'Zend_Log_Writer_' . ucfirst( $writer->type );
+	        $myWriter = new $myWriter(strftime($writer->url));
+	        if($writer->filter){
+	            foreach($writer->filter as $filter=>$filterOptions){
+	                $myFilter = 'Zend_Log_Filter_' . ucfirst($filter);
+	                $myFilter = new $myFilter((int)$filterOptions);
+	                $myWriter->addFilter($myFilter);
+	            }
+	        }
+	        if($writer->formatter){
+	            foreach($writer->formatter as $formatter=>$formatterOptions){
+	                $myFormatter = 'Zend_Log_Formatter_' . ucfirst($formatter);
+	                $myFormatter = new $myFormatter($formatterOptions);
+	                $myWriter->setFormatter($myFormatter);
+	            }
+	        }
+	        $log->addWriter($myWriter);
+	    }
+	    Zend_Registry::set('Zend_Log',$log);
+	    return $log;
 	}
 }

@@ -2,42 +2,41 @@
 /**
  * @__LICENSE_TEXT__@
  *
- * @category   Application
+ * @category   ShortUrl
  * @package    Controller
  * @author     Andreas Heigl<a.heigl@wdv.de>
  * @copyright  2011-@__YEAR__@ Andreas Heigl
  * @license    @__LICENSEURL__@ @__LICENSENAME__@
  * @version    @__VERSION__@
- * @since      12.05.2011
+ * @since      26.05.2011
  */
 
 /** ShortUrl_Controller_Action */
 require_once 'ShortUrl/Controller/Action.php';
 
 /**
- * Handle the default calls
+ * Handle calls to the soap-server
  *
- * @category   Application
+ * @category   ShortUrl
  * @package    Controller
  * @author     Andreas Heigl<a.heigl@wdv.de>
  * @copyright  2011-@__YEAR__@ Andreas Heigl
  * @license    @__LICENSEURL__@ @__LICENSENAME__@
  * @version    @__VERSION__@
- * @since      12.05.2011
+ * @since      26.05.2011
  */
-class IndexController extends ShortUrl_Controller_Action
+class SoapController extends ShortUrl_Controller_Action
 {
-
-    public function init()
+    /**
+     * This is the default action
+     *
+     * @return void
+     */
+    public function __call()
     {
-        /* Initialize action controller here */
+        $wsdl    = new Zend_Soap_AutoDiscover();
+        $options = array();
+        $server  = new Zend_Soap_Server ($wsdl, $options);
+        $server->setClass();
     }
-
-    public function indexAction()
-    {
-        $this -> _redirect ( 'admin/index/' );
-    }
-
-
 }
-

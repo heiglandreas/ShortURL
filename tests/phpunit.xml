@@ -2,7 +2,7 @@
 <phpunit bootstrap="./bootstrap.php" colors="true">
     <testsuites>
 	    <testsuite name="hei.gl TestSuite">
-	        <directory>codeFormat</directory>
+	        <directory>./application/</directory>
 	    </testsuite>
     </testsuites>
     <groups>
@@ -13,9 +13,9 @@
     <filter>
         <whitelist>
             <directory suffix=".php">../src</directory>
-            <exclude>
+            <!-- exclude>
                 <file>./TestConfiguration.php</file>
-            </exclude>
+            </exclude-->
         </whitelist>
 	</filter>
     <logging>

@@ -25,6 +25,15 @@ require_once 'Zend/Controller/Action.php';
  * @version    @__VERSION__@
  * @since      12.05.2011
  */
-class Heigl_Controller_Action extends Zend_Controller_Action
+class ShortUrl_Controller_Action extends Zend_Controller_Action
 {
+    /**
+     * Get the entityManager.
+     *
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->getBootstrap()->bootstrap('doctrine');
+    }
 }

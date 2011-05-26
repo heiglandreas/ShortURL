@@ -25,7 +25,7 @@ class AuthController extends Zend_Controller_Action
 		 	($this->_request->isPost() &&
 		  	 $this->_request->getPost('openid_mode') !== null) ||
 		 	(!$this->_request->isPost() &&
-		 	 $this->_request->getQuery('openid_mode') != null)) 
+		 	 $this->_request->getQuery('openid_mode') != null))
 		{
 			// Begin If.
 			Zend_Loader::loadClass('Zend_Auth_Adapter_OpenId');
@@ -33,6 +33,15 @@ class AuthController extends Zend_Controller_Action
 		 	$result = $auth->authenticate(
 		 		new Zend_Auth_Adapter_OpenId($this->_request->getPost('openid_identifier')));
 			if ($result->isValid()) {
+
+			    $user = User::find($result->getIdentity());
+			    if(!$user){
+			        $user = new User();
+    			    $user->setUid($result->getIdentity());
+    			    $this->getEntityManager()->persist($user);
+			    }
+			    $user->setLastLogin();
+			    $this->getEntityManager()->flush();
 		   		$this->_redirect('admin/index');
 		 	} else {
 		  		$auth->clearIdentity();

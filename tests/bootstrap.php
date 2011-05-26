@@ -18,6 +18,21 @@
 // TODO: check include path
 ini_set ( 'date.timezone', 'Europe/Berlin' );
 
-ini_set('include_path', ini_get('include_path')
-                        . PATH_SEPARATOR . dirname(__FILE__) . '/../src'
-                        );
+// Define path to application directory
+defined('APPLICATION_PATH')
+    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../src/application'));
+
+// Define application environment
+defined('APPLICATION_ENV')
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'testing'));
+
+// Ensure library/ is on include_path
+set_include_path(implode(PATH_SEPARATOR, array(
+    realpath(APPLICATION_PATH . '/library'),
+    '/Volumes/Sites/Sites/doctrine-orm',
+    '/Volumes/Sites/Sites/zf/library',
+    get_include_path(),
+)));
+
+require_once 'Zend/Loader/Autoloader.php';
+Zend_Loader_Autoloader::getInstance();
