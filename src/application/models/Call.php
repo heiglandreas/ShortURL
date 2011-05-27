@@ -111,21 +111,103 @@ class ShortUrl_Model_Call extends ShortUrl_Model_AbstractModel
      */
     public function setValues()
     {
-        $ip = $_SERVER['REMOTE_ADDR'];
+        $this->setIp()
+             ->setCreatedAt()
+             ->setLocale()
+             ->setReferer()
+             ->setUserAgent();
+        return $this;
+    }
+
+    /**
+     * Set the given IP-Address
+     *
+     * This currently only supports IPv4
+     *
+     * @var string $ip
+     *
+     * @return ShortUrl_Model_Call
+     */
+    public function setIp($ip=null)
+    {
+        if(null === $ip && isset($_SERVER['REMOTE_ADDR'])){
+            $ip = $_SERVER['REMOTE_ADDR'];
+        } elseif(null===$ip){
+            $ip = '0.0.0.0';
+        }
         $config=Zend_Registry::get('Zend_Config');
-        if(isset($config['anonymize'])&&$config['anonymize']){
-            $ip=explode('.',$ip);
-            $ip[2]=0;
-            $ip[3]=0;
-            $ip=implode('.',$ip);
-        }
+        try{
+            if($config->anonymize){
+                $ip=explode('.',$ip);
+                $ip[2]=0;
+                $ip[3]=0;
+                $ip=implode('.',$ip);
+            }
+        }catch(Exception $e){}
         $this->_ip=$ip;
-        $this->_createdAt = new DateTime();
-        if(isset($_SERVER['HTTP_REFERER'])){
-            $this->_referer = $_SERVER['HTTP_REFERER'];
+        return $this;
+    }
+
+    /**
+     * Set the given Date
+     *
+     * @param DateTime $date
+     *
+     * @return ShortUrl_Model_Call
+     */
+    public function setCreatedAt(DateTime $date = null)
+    {
+        if(null===$date){
+            $date = new DAteTime();
         }
-        $this->_useragent = $_SERVER['HTTP_USER_AGENT'];
-        $locale = new Zend_Locale();
+        $this->_createdAt = $date;
+        return $this;
+    }
+
+    /**
+     * Set the referer
+     *
+     * @param string $referer
+     *
+     * @return ShortUrl_Model_Call
+     */
+    public function setReferer($referer = null)
+    {
+        if(null===$referer && isset($_SERVER['HTTP_REFERER'])){
+            $referer = $_SERVER['HTTP_REFERER'];
+        }
+        $this->_referer = (string)$referer;
+        return $this;
+    }
+
+    /**
+     * Set the useragent
+     *
+     * @param string $ua
+     *
+     * @return ShortUrl_Model_Call
+     */
+    public function setUserAgent($useragent=null)
+    {
+        if(null==$useragent&&isset($_SERVER['HTTP_USER_AGENT'])){
+            $useragent=$_SERVER['HTTP_USER_AGENT'];
+        }
+        $this->_useragent = (string)$useragent;
+        return $this;
+    }
+
+    /**
+     * Set the locale the useragent had set.
+     *
+     * @param Zend-Locale $locale
+     *
+     * @return ShortUrl_Model_Call
+     */
+    public function setLocale(Zend_Locale $locale=null)
+    {
+        if(null===$locale){
+            $locale = new Zend_Locale();
+        }
         $this->_locale = $locale->toString();
         return $this;
     }
