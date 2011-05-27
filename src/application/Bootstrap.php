@@ -45,7 +45,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initConfig()
 	{
 	    $config = $this->getOptions();
-	    Zend_Registry::set('Zend_Config',$config);
+	    Zend_Registry::set('Zend_Config',new Zend_Config($config));
 	    return $config;
 	}
 
