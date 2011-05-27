@@ -3,5 +3,3 @@
 .project
 test.sqlite
 .settings
-build/*
-dist/*
