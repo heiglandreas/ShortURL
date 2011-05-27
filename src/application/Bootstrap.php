@@ -172,23 +172,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initLog()
 	{
 	    $log = new Zend_Log();
-	    $logOptions = new Zend_Config_Ini( APPLICATION_PATH . '/configs/logs.ini', APPLICATION_ENV);
+	    $logOptions = new Zend_Config_Xml( APPLICATION_PATH . '/configs/logs.ini.xml', APPLICATION_ENV);
 	    foreach($logOptions->writer as $writer ){
-	        $myWriter = 'Zend_Log_Writer_' . ucfirst( $writer->type );
-	        $myWriter = new $myWriter(strftime($writer->url));
-	        if($writer->filter){
-	            foreach($writer->filter as $filter=>$filterOptions){
-	                $myFilter = 'Zend_Log_Filter_' . ucfirst($filter);
-	                $myFilter = new $myFilter((int)$filterOptions);
+	        $myWriter = new $writer->type(strftime($writer->url));
+	        if($writer->filters){
+	            foreach($writer->filters as $filter){
+	                $myFilter = new $filter->type($filter->options);
 	                $myWriter->addFilter($myFilter);
 	            }
 	        }
 	        if($writer->formatter){
-	            foreach($writer->formatter as $formatter=>$formatterOptions){
-	                $myFormatter = 'Zend_Log_Formatter_' . ucfirst($formatter);
-	                $myFormatter = new $myFormatter($formatterOptions);
-	                $myWriter->setFormatter($myFormatter);
-	            }
+	            $myFormatter = new $writer->formatter->type($writer->formatter->options);
+	            $myWriter->setFormatter($myFormatter);
 	        }
 	        $log->addWriter($myWriter);
 	    }

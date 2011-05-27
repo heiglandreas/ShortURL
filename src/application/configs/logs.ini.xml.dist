@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    @__LICENSE_TEXT__@
+
+    @category   ShortUrl
+    @package    Configuration
+    @author     Andreas Heigl<a.heigl@wdv.de>
+    @copyright  2011-@__YEAR__@ Andreas Heigl
+    @license    @__LICENSEURL__@ @__LICENSENAME__@
+    @version    @__VERSION__@
+    @since      26.05.2011
+ -->
+<config  xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
+    <production>
+        <writers>
+            <writer>
+                <type>Zend_Log_Writer_Stream</type>
+                <url><zf:const zf:name="APPLICATION_PATH"/>/../log/%Y%m%d.log</url>
+                <filters>
+                    <filter>
+                        <type>Zend_Log_Filter_Priority</type>
+                        <options>3</options>
+                    </filter>
+                </filters>
+                <formatter>
+                    <type>Zend_Log_Formatter_Simple</type>
+                    <options>%timestamp% %priorityName% (%priority%): %message%<zf:const zf:name="PHP_EOL"/></options>
+                </formatter>
+            </writer>
+        </writers>
+    </production>
+    <staging extends="production" />
+    <development extends="production" />
+    <testing extends="production" />
+</config>
