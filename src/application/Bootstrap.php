@@ -173,11 +173,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	{
 	    $log = new Zend_Log();
 	    $logOptions = new Zend_Config_Xml( APPLICATION_PATH . '/configs/logs.ini.xml', APPLICATION_ENV);
-	    foreach($logOptions->writer as $writer ){
+	    foreach($logOptions->writers as $writer ){
 	        $myWriter = new $writer->type(strftime($writer->url));
 	        if($writer->filters){
 	            foreach($writer->filters as $filter){
-	                $myFilter = new $filter->type($filter->options);
+	                $myFilter = new $filter->type((int)$filter->options);
 	                $myWriter->addFilter($myFilter);
 	            }
 	        }

@@ -19,7 +19,7 @@
                 <filters>
                     <filter>
                         <type>Zend_Log_Filter_Priority</type>
-                        <options>3</options>
+                        <options type="int">3</options>
                     </filter>
                 </filters>
                 <formatter>

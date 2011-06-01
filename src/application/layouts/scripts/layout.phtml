@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<base href="/<?php echo $this->baseUrl(); ?>"/>
 		<meta http-equiv="Content" value="text/html; charset='utf-8'" />
-    <?php echo $this->headTitle() ?>
+        <?php echo $this->headTitle() ?>
     <?php echo $this->headScript() ?>
     <?php echo $this->headStyle() ?>
+    	<link rel="stylesheet" type="text/css" href="css/screen.css" media="screen"/>
 	</head>
 	<body>
-		<?php echo $this->layout()->header; ?>
-		<?php echo $this->layout()->navigation; ?>
+		<?php echo $this->render('header.phtml'); ?>
+		<?php echo $this->navigation(); ?>
+		<div id="content">
 		<?php echo $this->layout()->content; ?>
+		</div>
 		<?php echo $this->render('footer.phtml'); ?>
 	</body>
 </html>

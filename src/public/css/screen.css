@@ -1,0 +1,215 @@
+/*
+
+ @__LICENSE_TEXT__@
+ 
+ */
+@import url(../fonts/Sketch_Block_Bold/stylesheet.css);
+@import url(../fonts/sketchy/stylesheet.css);
+@import url(../fonts/TeXGyrePagella-Regular/stylesheet.css);
+@import url(../fonts/Vinegar/stylesheet.css);
+@import url(../fonts/angelina/stylesheet.css);
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family:"TeXGyrePagella-Regular";
+    font-size: 14px;
+    font-weight: 500;
+    background: transparent url(../img/bg.png) repeat top left;
+
+}
+
+h1{
+    font-family:"SketchyRegular";
+    -webkit-transform: rotate(-12deg);   
+    -moz-transform: rotate(-12deg);
+    -ms-transform: rotate(-12deg);
+    -o-transform: rotate(-12deg);
+    transform: rotate(-12deg);
+    top:20px;
+    left:20px;
+    position:fixed;
+    margin:0px;
+    font-size: 48px;
+}
+
+h2{
+	font-family:"SketchyRegular";
+	font-size:20px;
+	margin-bottom: 0.3em;
+}
+
+p{
+	margin-bottom: 0.3em;
+}
+
+a {
+    text-decoration: none;
+    text-shadow:0 0 2px rgb(128,128,128);
+    color: inherit;
+}
+a:visited{
+    text-shadow: 0 0 2px rgb(128,128,128);
+    color: inherit;
+}
+a:link{
+    text-shadow: 0 0 2px rgb(128,128,128);
+    color: inherit;
+}
+a:hover{
+    text-shadow: 0 0 2px rgb(0,128,0);
+    color: inherit;
+}
+a:active{
+    text-shadow: 0 0 2px rgb(255,128,0);
+    color: inherit;
+}
+
+.navigation li>a{
+    float:left;
+    font-family:"SketchyRegular";
+    font-size:18px;
+    padding: 2px 5px;
+    border:1px solid gray;
+    border-radius: 3px 8px 0 0;
+    display:block;
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0.0, rgba(128,128,128,0.0)),
+        color-stop(0.5, rgba(128,128,128,0.1)),
+        color-stop(0.51, rgba(128,128,128,0.2)),
+        color-stop(1, rgba(128,128,128,0.3))
+    );
+    background-image: -moz-linear-gradient(
+        center bottom,
+        rgb(86,188,74) 9%,
+        rgb(112,226,104) 55%,
+        rgb(146,255,136) 78%
+    );
+    
+}
+/*li>div{
+    position:absolute;
+    top:29px;
+    height:500px;
+    display:none;
+    padding: 5px;
+    width:100%;
+    overflow:auto;
+    border:1px solid rgba(128,128,128,0.4);
+}*/
+li:first-child>div{
+    display:block;
+}
+
+ul.navigation{
+    margin-top:10px;
+    list-style-type:none;
+    position:relative;
+    width: 600px;
+    margin-left: -300px;
+    left:50%;
+    top: 60px;
+    height:30px;
+    position:relative;
+}
+
+.navigation li.active>a{
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0.0, rgba(128,128,128,0.3)),
+        color-stop(0.5, rgba(128,128,128,0.2)),
+        color-stop(0.51, rgba(128,128,128,0.1)),
+        color-stop(1, rgba(128,128,128,0.0))
+    );
+    background-image: -moz-linear-gradient(
+        center bottom,
+        rgb(86,188,74) 9%,
+        rgb(112,226,104) 55%,
+        rgb(146,255,136) 78%
+    );
+    border-bottom:0px;
+    
+}
+
+#content{
+	width: 600px;
+	position:relative;
+	/*border-top: 1px solid rgb(128,128,128);*/
+	padding: 0;
+	margin-left:-300px;
+	left:50%;
+	top:59px;
+	padding: 5px;
+	padding-top: 15px;
+}
+
+#content a[href]{
+    padding-right:13px;
+    background:transparent url(../img/extlink.png) right center no-repeat;
+}
+
+
+#followOnGitHub {
+	background:green;
+	font-family:"SketchyRegular";
+	text-align:center;
+    -webkit-transform: rotate(45deg);   
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position:fixed;
+    top:65px;
+    right:65px;
+    margin-top:-15px;
+    margin-right:-150px;
+    width:300px;
+    padding: 6px;
+}
+#followOnGitHub a{
+	color:white;
+	display:block;
+	border:1px solid white;
+	border-width: 1px 0;
+	line-height:18px;
+	font-size:14px;
+	text-decoration: none;
+}
+
+#foot{
+    bottom:0px;
+    height:20px;
+    position:fixed;
+    width:100%;
+    text-align:center;
+    line-height:20px;
+    font-family:"SketchyRegular";
+    font-size:12px;
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0.0, rgba(0,0,0,0.30)),
+        color-stop(0.5, rgba(0,0,0,0.38)),
+        color-stop(0.51, rgba(0,0,0,0.42)),
+        color-stop(1, rgba(0,0,0,0.50))
+    );
+    background-image: -moz-linear-gradient(
+        center bottom,
+        rgb(86,188,74) 9%,
+        rgb(112,226,104) 55%,
+        rgb(146,255,136) 78%
+    );
+}
+
+.shorturl{
+	font-family: "SketchyRegular";
+}

@@ -36,4 +36,5 @@ class ShortUrl_Controller_Action extends Zend_Controller_Action
     {
         return $this->getBootstrap()->bootstrap('doctrine');
     }
+
 }
