@@ -25,7 +25,14 @@
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
-    /**
+    protected function _initAutoloader()
+	{
+	    $autoloader = Zend_Loader_Autoloader::getInstance();
+		$autoloader->registerNamespace('ShortUrl');
+		$autoloader->pushAutoloader(array('ezcBase', 'autoload'), 'ezc');
+	}
+
+	/**
      * Initialize the plugin-system
      *
      * @return void
@@ -64,15 +71,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		    )
 		);
 		Zend_Controller_Front::getInstance () -> getRouter () -> addRoute ( 'short', $route );
-//		$route = new Zend_Controller_Router_Route(
-//			':module/:controller/:action/*',
-//		    array(
-//		        'module'     => 'default',
-//		        'controller' => 'index',
-//		        'action'     => 'index',
-//		    )
-//		);
-//		Zend_Controller_Front::getInstance () -> getRouter () -> addRoute ( 'default', $route );
 	}
 
 	/**
@@ -107,14 +105,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		         'logUntranslated' => true));
 
 		Zend_Registry::set('Zend_Translate', $translate);
-	}
-
-
-	protected function _initAutoloader()
-	{
-	    $autoloader = Zend_Loader_Autoloader::getInstance();
-		$autoloader->registerNamespace('Heigl');
-		$autoloader->pushAutoloader(array('ezcBase', 'autoload'), 'ezc');
 	}
 
 	/**

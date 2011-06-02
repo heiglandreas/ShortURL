@@ -24,6 +24,7 @@ class UrlController extends Zend_Controller_Action
 		    $this->_redirect($urlObj->getUrl());
 		    return true;
 		}
+		$this->_log->log(sprintf ( 'Shorty %1$s not found', $shortId),Zend_Log::NOTICE);
 		$this->getResponse()->setRawHeader('HTTP/1.1 404 File not found');
 		return false;
     }

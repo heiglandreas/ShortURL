@@ -8,12 +8,13 @@ class HomeController extends ShortUrl_Controller_Action
 
     public function init()
     {
+
    $pages = array(
             array(
                 'label'      => 'Home',
                 'title'      => 'Go to home',
                 'module'     => 'default',
-                'controller' => 'home',
+                'controller' => 'index',
                 'action'     => 'index',
                 'order'      => -100 // Sicherstellen das Home die erste Seite ist
             ),
@@ -48,6 +49,7 @@ class HomeController extends ShortUrl_Controller_Action
 
     public function __call($function, $parameters)
     {
+        Zend_Registry::get('Zend_Log')->log($function,Zend_Log::DEBUG);
     }
 
 
