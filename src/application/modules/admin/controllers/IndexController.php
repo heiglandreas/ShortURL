@@ -23,13 +23,13 @@ require_once 'ShortUrl/Controller/Action.php';
  * @package    Application
  * @subpackage Admin
  * @author     Andreas Heigl<andreas@heigl.org>
- * @copyright 2011-@__YEAR__@ Andreas Heigl
+ * @copyright  2011-@__YEAR__@ Andreas Heigl
  * @license    @__LICENSEURL__@ @__LICENSENAME__@
  * @version    @__VERSION__@
  * @since      27.05.2011
  */
 
-class Admin_IndexController extends Heigl_Controller_Action
+class Admin_IndexController extends ShortUrl_Controller_Action
 {
 
 	public function indexAction()

@@ -11,6 +11,7 @@ class IndexControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 
     public function testIndexAction()
     {
+        $this->markTestIncomplete();
         $params = array('action' => 'index', 'controller' => 'Index', 'module' => 'default');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);

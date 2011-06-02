@@ -54,6 +54,7 @@ class ShortUrl_Model_UserDBTest extends Zend_Test_PHPUnit_ControllerTestCase
 
     public function testGettingUser()
     {
+        $this->markTestIncomplete();
         $user1=new ShortUrl_Model_User();
         $user1->setName('foo')
               ->persist();

@@ -63,14 +63,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 */
 	protected function _initRoute ()
 	{
-		$route = new Zend_Controller_Router_Route(
+		Zend_Controller_Front::getInstance()->getRouter()->addDefaultRoutes();
+	    $route = new Zend_Controller_Router_Route(
 			':shortId',
 		    array(
 		        'controller' => 'url',
 		        'action'     => 'get'
 		    )
 		);
-		Zend_Controller_Front::getInstance () -> getRouter () -> addRoute ( 'short', $route );
+		Zend_Controller_Front::getInstance()->getRouter()->addRoute('short', $route);
+
+
 	}
 
 	/**
