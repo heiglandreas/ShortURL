@@ -1,7 +1,7 @@
 README
 ======
 
-hei.gl - an application to shorten URLs
+ShortURL - an application to shorten URLs
 ---------------------------
 
 Requirements:
@@ -18,21 +18,22 @@ new URL into a field that will then be shortened.
 The user at first becomes a generated URL that can then be adapted. The URL
 will be stored after actively hitting a button or so.
 
-shortURLs can be altered afterwards by creating a link to the original one.
+Shortys (shortened URLs) can be altered afterwards by creating a link to the 
+original one.
 
-shortURLs consist automaticaly of 6 to 8 characters including upper- and
-lowercase Charactersas well as the digits 0 through 9. therefore we have
-62^8 possible URLs which is something about 218.340.105.584.896. That shoud
+Shortys consist automaticaly of 6 to 8 characters including upper- and
+lowercase Characters as well as the digits 0 through 9. therefore we have
+62^8 possible URLs which is something about 218.340.105.584.896. That should
 suffice for the moment. That makes a total of 20-22 characters for a short
 URL like http://hei.gl/8chaRacs
 
-When a short URL is called the browser is sent a 301-redirect header to the 
+When a short URL is called the browser is sent a 302-redirect header to the 
 original URL.
 
 When doing so, some informations are stored about the requesting user. These
 include the following:
 
-* IP-Adress (anonymized to the first to triplets for IPv4)
+* IP-Adress (anonymized to the first two triplets for IPv4)
 * User-Agent
 * Referer (if there has been one)
 * Prefered Language
@@ -43,8 +44,8 @@ browser used to view the url and the version of the browser.
 From the Referer we can see which pages have linked the shortUrl and from
 the prefered language we can see which language the user preferes.
 
-The application also has an API that allows users to interact via JSON or 
-XML-RPC with the shortener.
+The application also has an API that allows users to interact via JSON, XM-RPC, 
+SOAP or a REST-full interface with the shortener.
 
 The user can klick onto one of her links to see some additional informations
 about the usage of her shortURLs. The informations can be retrieved by adding
@@ -55,6 +56,9 @@ one user creates an account and her OpenID is added to that account. That
 user can then add/remove other users to her account.
 
 A logged in user can then select which account she now wants to use
+
+Shortys have to be at least 6 characters long, everything below that has 
+administrative purposes (i.E. to identify the API to be used)
 
 Technical
 ---------
