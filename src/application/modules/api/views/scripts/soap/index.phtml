@@ -1,0 +1,14 @@
+<h2>
+	<?php $this->translate('Available Informations:');?>
+</h2>
+<?php if(isset($this->apis)): ?>
+<ul>
+<?php foreach($this->apis as $api): ?>
+	<li>
+		<a href="<?php echo $this->baseUrl();?>/api/soap/<?php echo $api;?>?wsdl">
+		    <?php echo $api; ?>
+		</a>
+	</li>
+<?php endforeach; ?>
+</ul>
+<?php endif;?>
